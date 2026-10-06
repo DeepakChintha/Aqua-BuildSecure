@@ -4,16 +4,16 @@
 # - If your team has 4 members: provide all 4 members.
 
 team:
-  team_id: ""
-  name: ""
-  repository: "https://github.com/DeepakChintha/Aqua-BuildSecure.git"
+  team_id: "21"
+  name: "Aqua"
+  repository: "https://github.com/DeepakChintha/Aqua-BuildSecure" # URL of the newly created GitHub repository for this project
 
 members:
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
-  - name: ""
-    email: ""
+  - name: "Chintha Deepak"
+    email: "kai292810@gmail.com"
+  - name: "A. Yash Raj"
+    email: "yashrajkhandkekar@gmail.com"
+  - name: "K. Shree Charan"
+    email: "kydarishricharan20@gmail.com"
+  - name: "D. Jaswanth"
+    email: "donthijaswanthreddy1908@gmail.com"
