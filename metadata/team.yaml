@@ -6,7 +6,7 @@
 team:
   team_id: "21"
   name: "Aqua"
-  repository: "https://github.com/DeepakChintha/Aqua-BuildSecure.git" # URL of the newly created GitHub repository for this project
+  repository: "https://github.com/DeepakChintha/Aqua-BuildSecure" # URL of the newly created GitHub repository for this project
 
 members:
   - name: "Chintha Deepak"
