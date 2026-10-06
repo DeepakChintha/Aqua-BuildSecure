@@ -35,11 +35,28 @@ export function LoginPage() {
     event.preventDefault()
     if (!email.includes('@')) { setError('Enter a valid email address.'); return }
     if (password.length < 6) { setError('Use at least 6 characters for the demo password.'); return }
-    setError(''); setLoading(true)
-    await login(role, email)
-    setLoading(false)
-    push('You’re signed in', `Opening the ${roleCopy[role].label.toLowerCase()} workspace.`, 'success')
-    navigate(from || `/${role}/dashboard`, { replace: true })
+    setError('')
+    setLoading(true)
+
+    try {
+      await login(email, password)
+
+      push(
+        'You’re signed in',
+        'Opening your MediDesk workspace.',
+        'success'
+      )
+
+      navigate(from || `/${role}/dashboard`, { replace: true })
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to sign in. Please check your credentials.'
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   return <AuthFrame eyebrow="Welcome back" title="Sign in to your clinical workspace" description="Choose a demo role below or connect your Supabase Auth provider when you’re ready."><form className="auth-form" onSubmit={submit} noValidate><div className="demo-role-picker"><span className="field-label">Open a demo care workspace</span><div className="role-card-grid">{(Object.keys(roleCopy) as Role[]).map((item) => <button type="button" key={item} className={`role-card ${role === item ? 'role-card-active' : ''}`} onClick={() => { setRole(item); setEmail(item === 'patient' ? 'aarav@medidesk.demo' : item === 'doctor' ? 'sarah@medidesk.demo' : 'maya@medidesk.demo') }}><span className="role-card-icon" style={{ color: roleCopy[item].color }}>{item === 'patient' ? 'P' : item === 'doctor' ? 'D' : 'A'}</span><span><strong>{roleCopy[item].label}</strong><small>{roleCopy[item].description}</small></span>{role === item && <CheckCircle2 size={16} />}</button>)}</div></div><InputField label="Email address" type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@clinic.com" required autoComplete="email" error={error && !email.includes('@') ? error : undefined} /><label className="field"><span>Password</span><span className="password-wrap"><input type={showPassword ? 'text' : 'password'} value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Enter your password" autoComplete="current-password" /><button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} onClick={() => setShowPassword((visible) => !visible)}>{showPassword ? <EyeOff size={17} /> : <Eye size={17} />}</button></span>{error && email.includes('@') && <small className="field-error">{error}</small>}</label><div className="form-row"><label className="check-label"><input type="checkbox" checked={remember} onChange={(event) => setRemember(event.target.checked)} /><span>Remember me</span></label><Link to="/forgot-password" className="text-link">Forgot password?</Link></div><Button type="submit" size="lg" className="auth-submit" disabled={loading}>{loading ? 'Signing in…' : 'Sign in'}<ArrowRight size={17} /></Button><div className="auth-divider"><span>New to MEDIDESK?</span></div><Link to="/register" className="btn btn-secondary btn-lg auth-submit">Create an account<ArrowRight size={17} /></Link><div className="security-note"><LockKeyhole size={15} /><span>No passwords are stored in this demo. Production authentication is designed for Supabase Auth.</span></div></form></AuthFrame>
